@@ -195,18 +195,16 @@ export default function StudyPlan(){
 
   // Load from storage
   useEffect(()=>{
-    (async()=>{
-      try {
-        const r = await window.storage.get('kapish_checks_v1');
-        if(r) setChecks(JSON.parse(r.value));
-      } catch(e){}
-    })();
+    try {
+      const r = localStorage.getItem('kapish_checks_v1');
+      if(r) setChecks(JSON.parse(r));
+    } catch(e){}
   },[]);
 
   const toggle = useCallback((key)=>{
     setChecks(prev=>{
       const next = {...prev, [key]: !prev[key]};
-      window.storage.set('kapish_checks_v1', JSON.stringify(next)).catch(()=>{});
+      try { localStorage.setItem('kapish_checks_v1', JSON.stringify(next)); } catch(e){}
       return next;
     });
   },[]);
